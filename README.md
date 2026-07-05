@@ -5,7 +5,7 @@ Algoritmos y Estructuras de Datos - ISI - Ciclo 2026
 
 ## Integrantes del grupo
 
-- Collazo raukl
+- Collazo raúl
 - [Apellido, Nombre]
 - [Apellido, Nombre]
 
