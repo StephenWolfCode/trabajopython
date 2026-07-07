@@ -1,13 +1,28 @@
 import os
 from datetime import datetime
-from pyfiglet import Figlet
+
+try:
+    from pyfiglet import Figlet
+    fig = Figlet(font="doom")
+    TIENE_FIGLET = True
+except ImportError:
+    TIENE_FIGLET = False
+
+def mostrar_banner(texto):
+    if TIENE_FIGLET:
+        print(fig.renderText(texto))
+    else:
+        ancho = os.get_terminal_size().columns if hasattr(os, 'get_terminal_size') else 80
+        print(f"\n{'=' * ancho}")
+        print(f"{texto:^{ancho}}")
+        print(f"{'=' * ancho}\n")
 
 # variables globales
-mascotasRegistradas = {}   # {id: [nombre, especie, edad, peso, condicionReproductiva, estadoVacunacion, intolerancias, historialClinico, motivoConsulta, fechaIngreso]}
-propietarios = {}          # {dni: [nombreCompleto, numeroCelular, direccion, [idMascota1, idMascota2, ...]]}
-turnos = {}                # {idTurno: [idMascota, fecha, hora, estado]}
-atenciones = {}            # {idMascota: [[fecha, servicio, diagnostico, tratamiento], ...]}
-ingresosServicios = {      # [Cantidad, Total Recaudado]
+mascotasRegistradas = {}
+propietarios = {}
+turnos = {}
+atenciones = {}
+ingresosServicios = {
     "Consulta General": [0, 0.0],
     "Vacunacion": [0, 0.0],
     "Cirugia": [0, 0.0]
@@ -90,10 +105,77 @@ def validar_hora(mensaje):
 def limpiar_pantalla():
     os.system("cls" if os.name == "nt" else "clear")
 
+# funciones de validacion
+def validar_no_vacio(mensaje):
+    while True:
+        valor = input(mensaje).strip()
+        if valor:
+            return valor
+        print("Error: El campo no puede estar vacio.")
+
+def validar_entero_positivo(mensaje):
+    while True:
+        valor = input(mensaje).strip()
+        try:
+            num = int(valor)
+            if num > 0:
+                return num
+            print("Error: Debe ingresar un numero entero positivo.")
+        except ValueError:
+            print("Error: Debe ingresar un numero entero valido.")
+
+def validar_numerico_positivo(mensaje):
+    while True:
+        valor = input(mensaje).strip()
+        try:
+            num = float(valor)
+            if num > 0:
+                return num
+            print("Error: Debe ingresar un numero positivo.")
+        except ValueError:
+            print("Error: Debe ingresar un valor numerico valido.")
+
+def validar_dni(mensaje):
+    while True:
+        dni = input(mensaje).strip()
+        if dni.isdigit() and 7 <= len(dni) <= 8:
+            return dni
+        print("Error: El DNI debe contener entre 7 y 8 digitos numericos.")
+
+def validar_telefono(mensaje):
+    while True:
+        tel = input(mensaje).strip()
+        if tel.isdigit() and len(tel) >= 8:
+            return tel
+        print("Error: El telefono debe contener al menos 8 digitos numericos.")
+
+def validar_fecha(mensaje):
+    while True:
+        fecha = input(mensaje).strip()
+        try:
+            datetime.strptime(fecha, "%d/%m/%Y")
+            return fecha
+        except ValueError:
+            print("Error: La fecha debe tener el formato DD/MM/AAAA.")
+
+def validar_hora(mensaje):
+    while True:
+        hora = input(mensaje).strip()
+        try:
+            datetime.strptime(hora, "%H:%M")
+            return hora
+        except ValueError:
+            print("Error: La hora debe tener el formato HH:MM.")
+
+
+# funciones de utilidad
+def limpiar_pantalla():
+    os.system("cls" if os.name == "nt" else "clear")
+
 
 # menus
 def mostrarMenu():
-    print(fig.renderText("Bienvenido al sistema de atencion veterinaria"))
+    mostrar_banner("Bienvenido al sistema de atencion veterinaria")
     print("------------------------------------------------------------------")
     print("""
     Por favor seleccione una opcion:
@@ -108,7 +190,7 @@ def mostrarMenu():
 # sub-funciones de registro de animales
 def registrar_mascota():
     limpiar_pantalla()
-    print(fig.renderText("Registro de animales"))
+    mostrar_banner("Registro de animales")
     print("-----------------------------------------------")
 
     dni = validar_dni("Ingrese el DNI del propietario: ")
@@ -151,7 +233,7 @@ def registrar_mascota():
 
 def eliminar_mascota():
     limpiar_pantalla()
-    print(fig.renderText("Eliminar animal"))
+    mostrar_banner("Eliminar animal")
     print("------------------------------")
     id_eliminar = validar_entero_positivo("Ingrese el ID del animal a eliminar: ")
     if id_eliminar in mascotasRegistradas:
@@ -163,7 +245,7 @@ def eliminar_mascota():
 
 def mostrar_mascotas():
     limpiar_pantalla()
-    print(fig.renderText("Listado de animales registrados:"))
+    mostrar_banner("Listado de animales registrados")
     print("-------------------------------------------------")
     if not mascotasRegistradas:
         print("No hay animales registrados.")
@@ -175,7 +257,7 @@ def mostrar_mascotas():
 
 def registroDeAnimales():
     limpiar_pantalla()
-    print(fig.renderText("Registro de animales"))
+    mostrar_banner("Registro de animales")
     print("-----------------------------------------------")
     print("""
 1- Registrar
@@ -200,7 +282,7 @@ def registroDeAnimales():
 def agendarTurno():
     global idTurno
     limpiar_pantalla()
-    print(fig.renderText("Agendar un Turno"))
+    mostrar_banner("Agendar un Turno")
     print("-----------------------------------------------")
     id_m = validar_entero_positivo("Ingrese el ID de la mascota para el turno: ")
     if id_m in mascotasRegistradas:
@@ -217,7 +299,7 @@ def agendarTurno():
 
 def consultarAtencionMedica():
     limpiar_pantalla()
-    print(fig.renderText("Consultar Atencion Medica"))
+    mostrar_banner("Consultar Atencion Medica")
     print("-----------------------------------------------")
     id_m = validar_entero_positivo("Ingrese el ID de la mascota a consultar: ")
     if id_m in mascotasRegistradas:
@@ -227,7 +309,7 @@ def consultarAtencionMedica():
         print(f"Motivo de ingreso inicial: {mascotasRegistradas[id_m][8]}")
         print("-----------------------------------------------")
         if id_m in atenciones and atenciones[id_m]:
-            print(fig.renderText("Consultas y Atenciones registradas:"))
+            mostrar_banner("Consultas y Atenciones registradas")
             for idx, atencion in enumerate(atenciones[id_m], 1):
                 print(f"{idx}. Fecha: {atencion[0]} | Servicio: {atencion[1]}")
                 print(f"   Diagnostico: {atencion[2]}")
@@ -242,7 +324,7 @@ def consultarAtencionMedica():
 
 def controlDeServicios():
     limpiar_pantalla()
-    print(fig.renderText("Control de Servicios Realizados"))
+    mostrar_banner("Control de Servicios Realizados")
     print("-----------------------------------------------")
     pendientes = [(t_id, datos) for t_id, datos in turnos.items() if datos[3] == "Pendiente"]
     if not pendientes:
@@ -289,7 +371,7 @@ def controlDeServicios():
 
 def estadisticas():
     limpiar_pantalla()
-    print(fig.renderText("Estadisticas del Sistema"))
+    mostrar_banner("Estadisticas del Sistema")
     print("-----------------------------------------------")
     total_general = 0.0
     max_cant = -1
