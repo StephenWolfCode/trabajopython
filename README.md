@@ -5,7 +5,7 @@ Algoritmos y Estructuras de Datos - ISI - Ciclo 2026
 
 ## Integrantes del grupo
 
-- Collazo raukl
+- Collazo raúl
 - [Apellido, Nombre]
 - [Apellido, Nombre]
 
@@ -35,12 +35,19 @@ Sistema de gestion para una veterinaria que permite:
    cd [nombre del directorio]
    ```
 
-2. Ejecutar el programa:
+2. Instalar dependencias (opcional, solo para los banners con figlet):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Ejecutar el programa:
    ```bash
    python main.py
    ```
 
-3. Seguir las opciones del menu interactivo.
+4. Seguir las opciones del menu interactivo.
+
+> **Nota:** pyfiglet es opcional. Si no está instalado, el programa funciona igual sin los banners decorativos.
 
 ## Uso de Inteligencia Artificial
 
