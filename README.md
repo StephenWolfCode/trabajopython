@@ -5,13 +5,15 @@ Algoritmos y Estructuras de Datos - ISI - Ciclo 2026
 
 ## Integrantes del grupo
 
-- Collazo raúl
-- [Apellido, Nombre]
-- [Apellido, Nombre]
+- Collazo, raúl
+- Echavarria, Ithan Xavier
+- Ledesma, Adán Ruben
+- Silva, Eleazar Isaías
+- Viera, Tomás
 
 ## Comision
 
-[Comision]
+Comision K1.2
 
 ## Descripcion general del sistema
 
