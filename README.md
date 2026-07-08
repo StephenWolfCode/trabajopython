@@ -33,8 +33,8 @@ Sistema de gestion para una veterinaria que permite:
 
 1. Clonar el repositorio:
    ```bash
-   git clone [URL del repositorio]
-   cd [nombre del directorio]
+   git clone []
+   cd []
    ```
 
 2. Instalar dependencias (opcional, solo para los banners con figlet):
@@ -50,10 +50,6 @@ Sistema de gestion para una veterinaria que permite:
 4. Seguir las opciones del menu interactivo.
 
 > **Nota:** pyfiglet es opcional. Si no está instalado, el programa funciona igual sin los banners decorativos.
-
-## Uso de Inteligencia Artificial
-
-[Completar con la informacion sobre que IA se utilizo, para que y como]
 
 ## Estructura del codigo
 
