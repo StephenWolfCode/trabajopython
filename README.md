@@ -33,8 +33,8 @@ Sistema de gestion para una veterinaria que permite:
 
 1. Clonar el repositorio:
    ```bash
-   git clone []
-   cd []
+   git clone [https://github.com/StephenWolfCode/trabajopython.git]
+   cd [trabajopython]
    ```
 
 2. Instalar dependencias (opcional, solo para los banners con figlet):
